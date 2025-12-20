@@ -99,6 +99,7 @@ Backend runs on: `http://localhost:5000`
 ```bash
 #navigate to frontend folder
 cd frontend
+
 # From project root directory
 npm install
 
