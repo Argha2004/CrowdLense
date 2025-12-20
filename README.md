@@ -97,6 +97,8 @@ Backend runs on: `http://localhost:5000`
 ### 3️⃣ Frontend Setup (React + Vite)
 
 ```bash
+#navigate to frontend folder
+cd frontend
 # From project root directory
 npm install
 
