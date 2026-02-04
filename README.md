@@ -238,7 +238,7 @@ POST   /api/v1/traffic/logs          # Upload traffic logs from IoT devices
 
 ## 🎯 Roadmap
 
-- [ ] Integrate with AWS IoT Core
+- [1] Integrate with AWS IoT Core
 - [ ] Implement WebSocket for real-time updates
 - [ ] Add PostgreSQL database
 - [ ] Deploy to cloud (AWS/Vercel)
@@ -263,7 +263,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-**Sister Nivedita University**  
+**ARGHADEEP PAHIRA , ANKITA CHANDA , SHUBHAM BHUNIA**
+Sister Nivedita University  
 Department of Computer Science & Engineering  
 New Town, Kolkata - 700156
 
