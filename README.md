@@ -6,8 +6,6 @@
 
 A full-stack web application for real-time traffic monitoring using Raspberry Pi devices with YOLO11-s object detection
 
-[Features](#-features) • [Demo](#-demo) • [Quick Start](#-quick-start) • [Tech Stack](#-tech-stack) • [API](#-api-endpoints) • [License](#-license)
-
 </div>
 
 ---
@@ -148,25 +146,28 @@ CrowdLense_Fi/
 ├── backend/
 │   ├── app.py              # Flask API server
 │   └── requirements.txt    # Python dependencies
-├── src/
-│   ├── components/         # React components
-│   │   ├── AuthPage.tsx
-│   │   ├── ViewerDashboard.tsx
-│   │   ├── ProviderDashboard.tsx
-│   │   ├── DeviceDetail.tsx
-│   │   ├── AddDeviceDialog.tsx
-│   │   └── ui/            # shadcn/ui components
-│   ├── services/          # API service layer
-│   │   ├── api.ts         # API client functions
-│   │   └── deviceCache.ts # Device data caching
-│   ├── data/              # Mock data & type definitions
-│   ├── styles/            # Global CSS
-│   ├── App.tsx            # Main application
-│   └── main.tsx           # Entry point
-├── public/
-│   └── markers/           # Map marker icons
-├── package.json
-├── vite.config.ts
+|
+|
+├── frontend/
+│       ├── src/
+│       │   ├── components/         # React components
+│       │   │   ├── AuthPage.tsx
+│       │   │   ├── ViewerDashboard.tsx
+│       │   │   ├── ProviderDashboard.tsx
+│       │   │   ├── DeviceDetail.tsx
+│       │   │   ├── AddDeviceDialog.tsx
+│       │   │   └── ui/            # shadcn/ui components
+│       │   ├── services/          # API service layer
+│       │   │   ├── api.ts         # API client functions
+│       │   │   └── deviceCache.ts # Device data caching
+│       │   ├── data/              # Mock data & type definitions
+│       │   ├── styles/            # Global CSS
+│       │   ├── App.tsx            # Main application
+│       │   └── main.tsx           # Entry point
+│       ├── public/
+│       │   └── markers/           # Map marker icons
+│       ├── package.json
+│       ├── vite.config.ts
 └── README.md
 ```
 
