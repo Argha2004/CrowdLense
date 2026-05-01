@@ -73,7 +73,7 @@ Password: PlainTextPassword
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/crowdlense.git
+git clone https://github.com/Argha2004/crowdlense.git
 cd crowdlense
 ```
 
