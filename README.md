@@ -267,6 +267,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **ARGHADEEP PAHIRA , ANKITA CHANDA , SHUBHAM BHUNIA**
 
 Sister Nivedita University  
+B.Tech in Computer Science & Business Systems(Y3)
 Department of Computer Science & Engineering  
 New Town, Kolkata - 700156
 
