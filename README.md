@@ -2,9 +2,11 @@
 
 <div align="center">
 
-**Privacy-Preserving Crowdsourced Traffic Monitoring Platform**
+**Privacy-Preserving Crowdsourced Traffic Monitoring Platform (Research Project)**
 
-A full-stack web application for real-time traffic monitoring using Raspberry Pi devices with YOLO11-s object detection
+A full-stack research platform for real-time traffic monitoring using Raspberry Pi edge devices with YOLO11-s (NCNN) object detection and a web analytics dashboard.
+
+📄 **Research Paper:** [IEEE COMSNETS 2026 — CrowdLense (DOI: 10.1109/COMSNETS67989.2026.11418200)](https://doi.org/10.1109/COMSNETS67989.2026.11418200)
 
 </div>
 
@@ -12,31 +14,31 @@ A full-stack web application for real-time traffic monitoring using Raspberry Pi
 
 ## 📋 Overview
 
-CrowdLense is a crowdsourced traffic monitoring platform that leverages edge computing and computer vision to provide real-time traffic analytics. The system uses Raspberry Pi devices equipped with cameras running YOLO11-s for privacy-preserving vehicle detection and classification.
+**CrowdLense** is a research project investigating privacy-preserving, crowdsourced traffic monitoring through edge computing and computer vision. Model training and validation are performed on a GPU workstation using a modified [IDD-YOLO dataset](https://www.kaggle.com/datasets/ankita2028/idd-yolo-indian-driving-dataset-for-object-detect), while the NCNN-exported YOLO11-s model runs directly on Raspberry Pi edge devices so raw camera frames never leave the node.
 
 ### Key Highlights
-- 🔒 **Privacy-First**: Edge computing ensures no raw images are transmitted
-- 🎯 **Accurate Detection**: YOLO11-s trained on Indian Driving Dataset (IDD)
-- 🌐 **Dual Dashboard**: Separate interfaces for data providers and viewers
-- 📊 **Real-time Analytics**: Live traffic data visualization with charts
-- 🗺️ **Interactive Maps**: Leaflet-powered device tracking
-- 📤 **Data Export**: CSV export for further analysis
+- **Privacy-First**: Edge computing ensures no raw images are transmitted
+- **Accurate Detection**: YOLO11-s trained on Indian Driving Dataset (IDD)
+- **Dual Dashboard**: Separate interfaces for data providers and viewers
+- **Real-time Analytics**: Live traffic data visualization with charts
+- **Interactive Maps**: Leaflet-powered device tracking
+- **Data Export**: CSV export for further analysis
 
 ## ✨ Features
 
 ### For Traffic Data Providers
-- 📍 Add and manage traffic monitoring devices
-- 🔧 Configure IoT device credentials
-- 📈 Monitor device status (online/offline)
-- 📊 View device-specific analytics
-- 🗺️ Interactive map view of all deployed devices
+- Add and manage traffic monitoring devices
+- Configure IoT device credentials
+- Monitor device status (online/offline)
+- View device-specific analytics
+- Interactive map view of all deployed devices
 
 ### For Traffic Data Viewers
-- 🗺️ Explore all active traffic sensors on an interactive map
-- 📊 View real-time traffic data and analytics
-- 📈 Visualize vehicle type distribution with charts
-- 📥 Export traffic data as CSV
-- 🔍 Filter and analyze historical traffic patterns
+- Explore all active traffic sensors on an interactive map
+- View real-time traffic data and analytics
+- Visualize vehicle type distribution with charts
+- Export traffic data as CSV
+- Filter and analyze historical traffic patterns
 
 ### Vehicle Detection
 Detects **7 vehicle types** using YOLO11-s:
@@ -134,40 +136,60 @@ Open your browser and navigate to `http://localhost:3000`
 | **Flask-CORS** | Cross-origin resource sharing |
 | **JWT** | Authentication tokens |
 
-### IoT Edge (Raspberry Pi)
-- **YOLO11-s** - Object detection model
-- **Python** - Device software
-- **Camera Module** - Image capture
+### IoT Edge & Model Pipeline (`model/`)
+- **Training & Validation (GPU Workstation):** [Ultralytics YOLO11-s](model/train.py), [class remapping & person auto-labeling](model/data_label.py), and [visual validation](model/val.py)
+- **Edge Inference & Benchmarking (Raspberry Pi):** [NCNN real-time detection & CSV logging](model/test.py) and [NCNN FPS/CPU/RAM benchmark](model/fps_test.py)
+- **Dataset:** Modified [IDD-YOLO (Indian Driving Dataset for Object Detection)](https://www.kaggle.com/datasets/ankita2028/idd-yolo-indian-driving-dataset-for-object-detect)
+
+For full details on training, dataset preparation, and Raspberry Pi execution, see [`model/Readme.md`](model/Readme.md).
+
+## 🖥️ Web Dashboard
+
+The web dashboard (`frontend/` + `backend/`) provides role-based access for **Traffic Data Viewers** and **Data Providers**, backed by a Flask REST API (`http://localhost:5000/api/v1`):
+
+- **Authentication (`AuthPage.tsx`):** Sign up and login as either a `viewer` or `provider`.
+- **Viewer Dashboard (`ViewerDashboard.tsx` & `DeviceDetail.tsx`):**
+  - Interactive Leaflet map displaying all registered sensors with online (green) and offline (red) status markers.
+  - Search/filter sensors by address or GPS coordinates.
+  - Device analytics view with a Recharts multi-class vehicle trend `LineChart`, latest vehicle distribution `PieChart`, flow rate/congestion/dominant-type summary cards, location map, and one-click CSV export.
+- **Provider Dashboard (`ProviderDashboard.tsx` & `AddDeviceDialog.tsx`):**
+  - Overview of total, online, and offline devices owned by the provider.
+  - Register new sensor locations (latitude, longitude, address) or remove existing devices.
+  - Generate and download a Raspberry Pi setup package (`sensor.py`, `setup.sh`, `requirements.txt`, `README.md`) for each registered device.
+
+## 🤖 Model Training & Edge Testing (`model/`)
+
+The [`model/`](model/Readme.md) folder separates heavy training from lightweight edge deployment:
+
+- **Workstation (Training & Validation):** `data_label.py` remaps 21 original IDD classes to 7 traffic classes and auto-labels pedestrians (`yolo11m.pt`), `train.py` fine-tunes `yolo11s.pt` (`epochs=50`, `imgsz=640`, `batch=32`), and `val.py` visualizes predictions on validation images.
+- **Raspberry Pi (Edge Testing):** `test.py` runs live camera/video inference using the NCNN-exported model (`best_ncnn_model`), overlays bounding boxes and smoothed FPS, and logs per-frame class counts to CSV; `fps_test.py` benchmarks raw NCNN inference FPS, latency, CPU, and RAM usage.
 
 ## 📁 Project Structure
 
 ```
-CrowdLense_Fi/
+CrowdLense/
 ├── backend/
-│   ├── app.py              # Flask API server
-│   └── requirements.txt    # Python dependencies
-|
-|
+│   ├── app.py                  # Flask REST API server (in-memory demo DB)
+│   └── requirements.txt        # Python dependencies
 ├── frontend/
-│       ├── src/
-│       │   ├── components/         # React components
-│       │   │   ├── AuthPage.tsx
-│       │   │   ├── ViewerDashboard.tsx
-│       │   │   ├── ProviderDashboard.tsx
-│       │   │   ├── DeviceDetail.tsx
-│       │   │   ├── AddDeviceDialog.tsx
-│       │   │   └── ui/            # shadcn/ui components
-│       │   ├── services/          # API service layer
-│       │   │   ├── api.ts         # API client functions
-│       │   │   └── deviceCache.ts # Device data caching
-│       │   ├── data/              # Mock data & type definitions
-│       │   ├── styles/            # Global CSS
-│       │   ├── App.tsx            # Main application
-│       │   └── main.tsx           # Entry point
-│       ├── public/
-│       │   └── markers/           # Map marker icons
-│       ├── package.json
-│       ├── vite.config.ts
+│   ├── src/
+│   │   ├── components/         # React components (Auth, Dashboards, DeviceDetail, ui/)
+│   │   ├── services/           # API client (api.ts) & coordinate cache (deviceCache.ts)
+│   │   ├── data/               # Vehicle type config & chart helpers
+│   │   ├── styles/             # Global CSS
+│   │   ├── App.tsx             # Main application & role routing
+│   │   └── main.tsx            # Entry point
+│   ├── public/
+│   │   └── markers/            # Map marker icons
+│   ├── package.json
+│   └── vite.config.ts
+├── model/
+│   ├── data_label.py           # Dataset class remapping (21 -> 7) & person auto-labeling
+│   ├── train.py                # YOLO11-s training script (GPU workstation)
+│   ├── val.py                  # Validation prediction visualizer
+│   ├── test.py                 # Raspberry Pi NCNN live detection & CSV logger
+│   ├── fps_test.py             # Raspberry Pi NCNN FPS/CPU/RAM benchmark
+│   └── Readme.md               # Detailed model & edge documentation
 └── README.md
 ```
 
@@ -264,10 +286,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-**ARGHADEEP PAHIRA , ANKITA CHANDA , SHUBHAM BHUNIA**
+**ARGHADEEP PAHIRA , ANKITA CHANDA , SHUBHAM BHUNIA , BIDYUT SAHA**
 
-Sister Nivedita University  
-B.Tech in Computer Science & Business Systems(Y3)
+Sister Nivedita University
 Department of Computer Science & Engineering  
 New Town, Kolkata - 700156
 
@@ -275,6 +296,7 @@ New Town, Kolkata - 700156
 
 For questions or support, please open an issue or contact the development team.
 shubhambhunia20b@gmail.com
+arghadeeppakhira@gmail.com
 ---
 
 <div align="center">
