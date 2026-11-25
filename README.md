@@ -274,7 +274,7 @@ New Town, Kolkata - 700156
 ## 📧 Contact
 
 For questions or support, please open an issue or contact the development team.
-
+shubhambhunia20b@gmail.com
 ---
 
 <div align="center">
