@@ -297,7 +297,7 @@ New Town, Kolkata - 700156
 For questions or support, please open an issue or contact the development team.
 shubhambhunia20b@gmail.com
 arghadeeppakhira@gmail.com
-chandaankita46@gmail.com
+ankita.23.chanda@gmail.com
 ---
 
 <div align="center">
